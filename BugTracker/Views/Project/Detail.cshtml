@@ -1,0 +1,103 @@
+﻿@model ProjectViewModel 
+@{
+    ViewData["Title"] = "Project breakdown";
+}
+
+<h1 class="mt-5 text-black fs-2 border-bottom pb-4 mb-5">Project breakdown</h1>
+<div class="row">
+    @foreach(var requirementStatus in Model.RequirementStatuses)
+    {
+    <div class="col-4">
+        <div class="card border-0" style="min-height:62vh">
+            <div class="card-body js-status-column" data-status-number="@requirementStatus.Status">
+                <h2 class="fs-2 text-black ps-2 pt-1 pb-3 mb-5 mt-2 border-bottom">@requirementStatus.Description</h2>
+                @foreach (var requirement in Model.Requirements)
+                {
+                    @if (requirementStatus.Status == requirementStatus.Status)
+                    {
+                        <a href="" class="card mb-2 ms-2 me-2 text-decoration-none js-draggable-card" draggable="true" id="@requirementStatus.Status">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="fs-3 text-black">@requirement.Description</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+@section Scripts {
+
+<script>
+    window.onload = function () {
+       var requirements = @Html.Raw(Json.Serialize(Model.Requirements));
+        console.log(requirements);
+
+        var cards = document.querySelectorAll(".js-draggable-card");
+        cards.forEach(function (el) {
+            el.addEventListener("dragstart", dragstart_handler);
+        });
+
+        var statusCol = document.querySelectorAll(".js-status-column");
+        statusCol.forEach(function (el) {
+            el.addEventListener("dragover", dragover_handler);
+            el.addEventListener("drop", drop_handler)
+        })
+
+        function dragstart_handler(ev) {
+            console.log(ev.srcElement.id);
+            ev.dataTransfer.setData("text/task-id", ev.srcElement.id);
+        }
+
+        function dragover_handler(ev) {
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = "move";
+        }
+
+        function drop_handler(ev) {
+            ev.preventDefault();
+            // Get the id of the target and add the moved element to the target's DOM
+            console.log(ev);
+            const taskId = ev.dataTransfer.getData("text/task-id");
+            const draggedElement = document.querySelector(`[id='${taskId}']`);
+            ev.target.appendChild(draggedElement);
+
+            const newStatusId = ev.target.getAttribute("data-status-number");
+            const task = getTask(taskId);
+            task.taskStatusId = newStatusId;
+
+            @*fetch(`/api/projects/${@Model.Project.Id}/tasks/${taskId}`, {
+                method: "PUT",
+                body: JSON.stringify(task),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });*@
+        }
+
+        function getTask(taskId) {
+            var task = {};
+
+            for (var i = 0; i < tasks.length; i++) {
+                if (tasks[i].id == taskId) {
+                    task = tasks[i];
+                    break;
+                }
+            }
+
+            return task;
+        }
+
+    }
+
+    
+</script>
+    
+
+}

@@ -1,0 +1,93 @@
+﻿@model ProjectFormViewModel
+@{
+    ViewData["Title"] = "Create a project";
+}
+
+<style>
+    input {
+        width: 384px;
+    }
+
+/**
+ * ----------------------------------------
+ * animation slide-out-right
+ * ----------------------------------------
+ *
+    /*
+        Form validation stuff
+    */
+
+    .field-validation-error {
+        margin-top:0.7rem;
+        font-size: 1.75rem;
+        display:inline-block;
+    }
+
+    .input-validation-error, .input-validation-error:focus {
+        border: 2px solid #A61B1B;
+    }
+
+</style>
+
+<section class="position-absolute top-50 start-50 translate-middle" style="width:25rem;">
+    <div class="js-form-container slide-in-top" style="opacity:1">
+        <p class="fs-2 mb-5 text-primary fw-bold">New project</p>
+        <form class="js-project-form" asp-controller="Project" asp-action="Create" method="post">
+            <p class="pb-4">
+                <label class="form-label fs-3 mb-3 text-black" for="project-name">Name</label>
+                <input asp-for="ProjectName" style="width:38.4rem;" type="text" class="form-control fs-3 text-black" id="project-name" placeholder="Enter the project name" />
+                <span asp-validation-for="ProjectName" class="text-danger fw-bold"></span>
+            </p>
+            <p>
+                <button class="btn btn-primary fw-bold fs-4 me-2" style="color: #DCEEFB" type="submit">Create</button>
+                <a class="btn btn-secondary fw-bold fs-4" asp-controller="Project" asp-action="Index">Cancel</a>
+            </p>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+
+    <script>
+
+        window.onload = function () {
+            const formContainer = document.querySelector(".js-form-container");
+
+            const form = document.querySelector(".js-project-form");
+            form.addEventListener("submit", saveForm);
+
+            const nameInpt = form["project-name"];
+            if ("@Model.ErrorMessage"  != "")
+                showValidationMessage("@Model.ErrorMessage");
+
+            nameInpt.addEventListener("input", function () {
+                this.classList.remove("input-validation-error");
+                this.nextElementSibling.innerHTML = "";
+            });
+
+            function saveForm(event) {
+                event.preventDefault();
+
+                if (nameInpt.value == "") {
+                    showValidationMessage("Your project needs a name!");
+                } else {
+                    formContainer.classList.add("slide-out-top");
+
+                    setTimeout(() => this.submit(), 700);
+                }
+            }
+
+            function showValidationMessage(message) {
+                nameInpt.classList.add("input-validation-error");
+                const nameInptValidationMsgElement = form.querySelector(".field-validation-valid");
+                nameInptValidationMsgElement.classList.remove("field-validation-valid");
+                nameInptValidationMsgElement.classList.add("field-validation-error");
+                nameInptValidationMsgElement.innerHTML = message;
+            }
+
+            setTimeout(() => formContainer.classList.remove("slide-in-top"), 1500);
+        }
+    </script>    
+
+
+}

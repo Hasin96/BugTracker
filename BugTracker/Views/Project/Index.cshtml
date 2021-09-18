@@ -1,0 +1,53 @@
+﻿@model ProjectIndexViewModel
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<section class="js-projects-container slide-in-top mt-5">
+    @if (Model.ErrorMessage != "") {
+    <div class="alert alert-danger mb-5 fs-3" role="alert">
+        @Model.ErrorMessage
+    </div>
+}
+    <h1>Projects</h1>
+    <a asp-controller="Project" asp-action="Create" class="btn btn-primary fw-bold fs-4 me-2 js-create-project-btn">Create project</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th><div class="fs-3">Name</div></th>
+            </tr>
+        </thead>
+        <tbody>-->
+            @foreach(var p in Model.Projects)
+            {
+            <tr>
+                <td><a asp-controller="Project" asp-action="Detail" asp-route-id="@p.Id" class="fs-3">@p.Name</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+
+@section Scripts {
+
+    <script>
+
+        window.onload = function () {
+            const projectsContainer = document.querySelector(".js-projects-container");
+
+            const createProjBtn = document.querySelector(".js-create-project-btn");
+            createProjBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                projectsContainer.classList.add("slide-out-top");
+                setTimeout(() => window.location = this.href, 700);
+            });
+
+            setTimeout(() => projectsContainer.classList.remove("slide-in-top"), 1500);
+        }
+    </script>
+
+
+}
+
+

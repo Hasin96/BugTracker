@@ -1,0 +1,16 @@
+﻿html {
+    font-size: 62.5% !important;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    font-family: inherit;
+}
+
+.btn {
+    padding: .8rem 1.5rem !important;
+}
+
+.form-control {
+    padding: .6rem 1.5rem !important;
+}
