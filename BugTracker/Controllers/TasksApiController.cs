@@ -31,6 +31,7 @@ namespace BugTracker.Controllers
 
             var pie = "pie";
             var STRING = "string";
+            var IForgot = "IForgot";
 
             return Ok(response.Result);
         }
