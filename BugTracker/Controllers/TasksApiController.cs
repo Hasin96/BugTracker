@@ -26,6 +26,9 @@ namespace BugTracker.Controllers
         {
             var response = await _projectService.AddRequirementToProject(projectId, requirement);
 
+            if (response.Code == ProjectServiceCode.ProjectNotFound)
+                return NotFound("Project not found");
+
             return Ok(response.Result);
         }
 

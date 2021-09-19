@@ -50,6 +50,18 @@ namespace BugTracker.Domain
 
             return new ProjectServiceResult(project, ProjectServiceCode.Success);
         }
+
+        public async Task<Project> UpdateProjectRequirement(int projectId, int requirementId, Requirement updatedRequirement)
+        {
+            Project project = await _repository.GetProjectWithRequirements(projectId);
+            project.Status = ProjectStatus.Started;
+
+            Requirement requirement = project.Requirements.Find(r => r.Id == requirementId);
+            requirement.Description = updatedRequirement.Description;
+            requirement.Status = updatedRequirement.Status;
+
+            return project;
+        }
     }
 
    

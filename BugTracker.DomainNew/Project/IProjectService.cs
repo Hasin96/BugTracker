@@ -6,5 +6,6 @@ namespace BugTracker.Domain
     {
         Task<ProjectServiceResult> Create(string projectName);
         Task<ProjectServiceResult> AddRequirementToProject(int projectId, string requirement);
+        Task<Project> UpdateProjectRequirement(int projectId, int requirementId, Requirement updatedRequirement);
     }
 }

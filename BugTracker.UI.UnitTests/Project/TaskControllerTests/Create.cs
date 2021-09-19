@@ -48,6 +48,37 @@ namespace BugTracker.UI.UnitTests.TaskControllerTests
             project.Id.Should().Be(projectId);
             project.Requirements.First().Description.Should().Be(requirement);
         }
-        
+
+        [Fact]
+        public async Task ShouldReturnErrorWhenAddingRequirementToNotFoundProject()
+        {
+            int projectId = 1;
+            string requirement = "Add A FOOTER WHICH SHOWS THE STATUS";
+            var proj = new Project
+            {
+                Id = projectId,
+                Requirements = new List<Requirement>
+                {
+                    new Requirement
+                    {
+                        Description = requirement,
+                        Status = RequirementStatus.NotStarted,
+                        ProjectId = projectId
+                    }
+                }
+            };
+            var projectServiceResult = new ProjectServiceResult(null, ProjectServiceCode.ProjectNotFound);
+            var projectSerivceMock = new Mock<IProjectService>();
+            projectSerivceMock.Setup(psm => psm.AddRequirementToProject(projectId, requirement))
+                .Returns(Task.FromResult(projectServiceResult));
+
+
+            var taskController = new TasksApiController(projectSerivceMock.Object);
+
+            var result = await taskController.Create(projectId, requirement);
+            var r = result.As<NotFoundObjectResult>();
+            r.StatusCode.Should().Be((int)HttpStatusCode.NotFound);
+            r.Value.Should().Be("Project not found");
+        }
     }
 }
