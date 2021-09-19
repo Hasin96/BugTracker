@@ -13,14 +13,19 @@ namespace BugTracker.Domain
             _repository = repository;
         }
 
-        public async Task<ProjectServiceResult> AddRequirementToProject(int projectId, Requirement requirement)
+        public async Task<ProjectServiceResult> AddRequirementToProject(int projectId, string requirement)
         {
             var project = await _repository.GetProjectWithRequirements(projectId);
 
             if (project is null)
                 return new ProjectServiceResult(null, ProjectServiceCode.ProjectNotFound);
 
-            project.Requirements.Add(requirement);
+            project.Requirements.Add(new Requirement
+            {
+                ProjectId = projectId,
+                Description = requirement,
+                Status = RequirementStatus.NotStarted
+            });
 
             await _repository.SaveAsync(project);
 

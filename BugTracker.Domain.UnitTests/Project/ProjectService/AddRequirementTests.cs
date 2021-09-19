@@ -26,7 +26,7 @@ namespace BugTracker.Domain
         [Fact]
         public async Task ShouldCallAddRequirementToProject()
         {
-            ProjectServiceResult serviceResult =  await _projectService.AddRequirementToProject(_projectId, _newRequirement);
+            ProjectServiceResult serviceResult =  await _projectService.AddRequirementToProject(_projectId, _newRequirement.Description);
 
             serviceResult.Result.Requirements.Count.Should().Be(1);
             serviceResult.Result.Requirements.First().Description = "test1";
@@ -38,7 +38,7 @@ namespace BugTracker.Domain
         [Fact]
         public async Task ShouldCallSaveChanges()
         {
-            await _projectService.AddRequirementToProject(_projectId, _newRequirement);
+            await _projectService.AddRequirementToProject(_projectId, _newRequirement.Description);
 
             _projectRepository.Verify(m => m.SaveAsync(It.IsAny<Project>()), Times.Exactly(1));
         }
@@ -49,7 +49,7 @@ namespace BugTracker.Domain
             _projectRepository.Setup(x => x.GetProjectWithRequirements(It.IsAny<int>()))
                 .Returns(Task.FromResult((Project)null));
 
-            ProjectServiceResult result = await _projectService.AddRequirementToProject(_projectId, _newRequirement);
+            ProjectServiceResult result = await _projectService.AddRequirementToProject(_projectId, _newRequirement.Description);
 
             result.Code.Should().Be(ProjectServiceCode.ProjectNotFound);
             result.Result.Should().Be(null);

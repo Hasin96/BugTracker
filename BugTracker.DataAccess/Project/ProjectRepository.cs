@@ -30,5 +30,11 @@ namespace BugTracker.DataAccess
 
         public async Task<IEnumerable<Project>> GetAll()
             => await _context.Projects.ToListAsync();
+
+        public async Task UpdateAsync(Project project)
+        {
+            _context.Projects.Update(project);
+            await _context.SaveChangesAsync();
+        }
     }
 }
