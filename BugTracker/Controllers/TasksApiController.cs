@@ -37,6 +37,10 @@ namespace BugTracker.Controllers
             var STRING = "string";
             var IForgot = "IForgot";
 
+            var pie = "pie";
+            var STRING = "string";
+            var IForgot = "IForgot";
+
             return Ok(response.Result);
         }
 
