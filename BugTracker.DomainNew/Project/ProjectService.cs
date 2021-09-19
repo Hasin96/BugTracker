@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BugTracker.Domain
@@ -10,6 +11,20 @@ namespace BugTracker.Domain
         public ProjectService(IProjectRepository repository)
         {
             _repository = repository;
+        }
+
+        public async Task<ProjectServiceResult> AddRequirementToProject(int projectId, Requirement requirement)
+        {
+            var project = await _repository.GetProjectWithRequirements(projectId);
+
+            if (project is null)
+                return new ProjectServiceResult(null, ProjectServiceCode.ProjectNotFound);
+
+            project.Requirements.Add(requirement);
+
+            await _repository.SaveAsync(project);
+
+            return new ProjectServiceResult(project, ProjectServiceCode.Success);
         }
 
         public async Task<ProjectServiceResult> Create(string projectName)

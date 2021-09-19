@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Domain
 {
-    public class ProjectServiceTests
+    public class CreateTests
     {
         private Mock<IProjectRepository> _projectRepository;
         private ProjectService _projectService;
 
-        public ProjectServiceTests()
+        public CreateTests()
         {
             _projectRepository = new Mock<IProjectRepository>();
             _projectService = new ProjectService(_projectRepository.Object);
         }
 
         [Fact]
-        public async Task ProjectService_ShouldReturnNewProject_WithInitializtedValues()
+        public async Task ShouldReturnNewProject_WithInitializtedValues()
         {
             var projectName = "BugTracker";
 
@@ -33,7 +33,7 @@ namespace BugTracker.Domain
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public async Task ProjectSerice_ShouldThrowNullException_WithInvalidName(string projectName)
+        public async Task ShouldThrowNullException_WithInvalidName(string projectName)
         {
             Func<Task> act = async () => await _projectService.Create(projectName);
 
@@ -43,7 +43,7 @@ namespace BugTracker.Domain
         }
 
         [Fact]
-        public async Task ProjectService_ShouldCallAddAndSaveChanges()
+        public async Task ShouldCallAddAndSaveChanges()
         {
             var projectName = "BugTracker";
             _projectRepository.Setup(x => x.SaveAsync(It.IsAny<Project>()));
@@ -54,7 +54,7 @@ namespace BugTracker.Domain
         }
 
         [Fact]
-        public async Task ProjectService_ShouldReturnError_WhenProjectNameAlreadyExists()
+        public async Task ShouldReturnError_WhenProjectNameAlreadyExists()
         {
             var projectName = "BugTracker";
             _projectRepository.Setup(x => x.IsProjectNameADuplicate(It.IsAny<string>()))
@@ -67,7 +67,7 @@ namespace BugTracker.Domain
         }
 
         [Fact]
-        public async Task ProjectService_ShouldReturnSuccess_WhenProjectNameIsUnique()
+        public async Task ShouldReturnSuccess_WhenProjectNameIsUnique()
         {
             var projectName = "BugTracker";
             _projectRepository.Setup(x => x.IsProjectNameADuplicate(It.IsAny<string>()))
@@ -78,5 +78,6 @@ namespace BugTracker.Domain
             result.Code.Should().Be(ProjectServiceCode.Success);
             result.Result.Name.Should().Be(projectName);
         }
+
     }
 }

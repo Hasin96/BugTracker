@@ -11,7 +11,7 @@ using BugTracker.Common;
 using BugTracker.ViewModels;
 using System;
 
-namespace BugTracker.UI.UnitTests
+namespace BugTracker.UI.UnitTests.ProjectControllerTests
 {
     public class Detail
     {

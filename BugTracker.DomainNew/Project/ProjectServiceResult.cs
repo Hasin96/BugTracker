@@ -16,6 +16,7 @@
     public enum ProjectServiceCode
     {
         ErrorDuplicateProjectName = 1,
-        Success = 2
+        Success = 2,
+        ProjectNotFound = 3
     }
 }

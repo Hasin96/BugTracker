@@ -9,7 +9,7 @@ using BugTracker.Domain;
 using Moq;
 using System.Linq;
 
-namespace BugTracker.UI.UnitTests
+namespace BugTracker.UI.UnitTests.ProjectControllerTests
 {
     public class Create
     {

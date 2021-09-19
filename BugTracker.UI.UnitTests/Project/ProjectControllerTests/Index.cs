@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BugTracker.Common;
 
-namespace BugTracker.UI.UnitTests
+namespace BugTracker.UI.UnitTests.ProjectControllerTests
 {
     public class Index
     {
