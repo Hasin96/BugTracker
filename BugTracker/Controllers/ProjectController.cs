@@ -38,6 +38,8 @@ namespace BugTracker.Controllers
                 })
             };
 
+            var p = "";
+
             return View(viewModel);
         }
 
