@@ -60,29 +60,6 @@ namespace BugTracker.DataAccess
         }
 
         [Fact]
-        public async Task ShouldGetProjectWithTasks()
-        {
-            var project = new Project { Name = "test1", Status = ProjectStatus.NotStarted };
-            using (var context = new BugTrackerContext(_options))
-            {
-                ProjectRepository repository = new ProjectRepository(context);
-                await repository.SaveAsync(project);
-            }
-
-            Project projectFromQuery;
-            using (var context = new BugTrackerContext(_options))
-            {
-                ProjectRepository repository = new ProjectRepository(context);
-                projectFromQuery = await repository.GetProjectWithRequirements(1);
-            }
-
-            project.Id.Should().Be(projectFromQuery.Id);
-            project.Name.Should().Be(projectFromQuery.Name);
-            project.Status.Should().Be(projectFromQuery.Status);
-            project.Requirements.Count.Should().Be(projectFromQuery.Requirements.Count);
-        }
-
-        [Fact]
         public async Task ShouldGetProjectWithNewTask()
         {
             var project = new Project
