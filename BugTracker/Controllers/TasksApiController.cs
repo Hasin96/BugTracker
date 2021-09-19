@@ -29,6 +29,10 @@ namespace BugTracker.Controllers
             if (response.Code == ProjectServiceCode.ProjectNotFound)
                 return NotFound("Project not found");
 
+            var legend = "legend";
+            var pleb = "pleb";
+            var fiftyp = "50pence";
+
             var pie = "pie";
             var STRING = "string";
             var IForgot = "IForgot";
